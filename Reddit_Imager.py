@@ -1,4 +1,4 @@
-#Version 0.0.1
+#Version 0.1.0
 #Author: Zach Almon
 
 import urllib.request
@@ -67,7 +67,10 @@ def main():
     list_of_urls = []
     list_of_titles = []
 
-    driver = webdriver.PhantomJS(executable_path = currentDirectory + "\\PhantomJS\\bin\\phantomjs.exe")
+    #Executable path Must be whatever path on your local machine to phantomjs.exe
+    #This can be downloaded from the PhantomJS Website.
+
+    driver = webdriver.PhantomJS(executable_path = currentDirectory + "\\VS\\PhantomJS\\bin\\phantomjs.exe")
     driver.set_window_size(1366, 768)
 
     #Right now this runs once every hour.
@@ -123,7 +126,7 @@ def main():
 
         #Reddit Doesn't like when you make requests less than 2 seconds apart. 
         #I give a buffer here from the praw requests to my selenium requests
-        time.sleep(25)
+        time.sleep(15)
 
         for i in range(len(list_of_urls)):
 
@@ -132,10 +135,10 @@ def main():
 
             temp_string = list_of_urls[i]
 
-            time.sleep(4)
+            time.sleep(3)
             
             driver.get(list_of_urls[i])
-            driver.save_screenshot(list_of_titles + '.jpg')
+            driver.save_screenshot(list_of_titles[i] + '.jpg')
         
 
         #Get the time to wait to where from start_time to the next start_time should be exactly 1.5 hours
@@ -143,12 +146,12 @@ def main():
         difference = end_time - start_time
         time_to_wait = 5400 - difference
 
-        print('\n\nWaiting %d seconds' % (int(time_to_wait)))
 
         #If for some reason the downloading takes longer than 1.5 hours then go ahead and go to next loop otherwise wait
         if int(time_to_wait) < 0:
             pass
         else:
+            print('\n\nWaiting %d seconds' % (int(time_to_wait)))
             time.sleep(int(time_to_wait))
     
         
