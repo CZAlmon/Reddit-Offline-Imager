@@ -51,10 +51,10 @@ def main():
     currentDirectory = os.getcwd()
 
     if platformType == 'Windows':
-        MASTERdirectoryName = currentDirectory + "\\Reddit_HTML_Folder"
+        MASTERdirectoryName = currentDirectory + "\\Reddit_Image_Folder"
 
     else:
-        MASTERdirectoryName = currentDirectory + "/Reddit_HTML_Folder"
+        MASTERdirectoryName = currentDirectory + "/Reddit_Image_Folder"
     
     try: 
         os.makedirs(MASTERdirectoryName)
