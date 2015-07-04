@@ -6,7 +6,7 @@ import os
 import platform
 import praw
 import time
-import selenium
+from selenium import webdriver
 
 #To get Unix and Windows
 platformType = platform.system()
