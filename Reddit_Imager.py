@@ -1,4 +1,4 @@
-#Version 0.1.0
+#Version 0.2.0
 #Author: Zach Almon
 
 import urllib.request
@@ -17,7 +17,7 @@ def main():
     reddit_url = 'http://www.reddit.com/r/'
     url_part_2 = '/comments/'
 
-    #   reddit_url + 'subreddit' + url_part_2 + 'post.name[3:]' + /
+    #   reddit_url + 'subreddit' + url_part_2 + 'post.name[3:]' + /?limit=500
 
     list_of_subreddits = []
     list_of_subreddits.append('askreddit')
@@ -70,15 +70,16 @@ def main():
     #Executable path Must be whatever path on your local machine to phantomjs.exe
     #This can be downloaded from the PhantomJS Website.
 
-    driver = webdriver.PhantomJS(executable_path = currentDirectory + "\\VS\\PhantomJS\\bin\\phantomjs.exe")
+    #driver = webdriver.PhantomJS(executable_path = currentDirectory + "\\VS\\PhantomJS\\bin\\phantomjs.exe")
+    driver = webdriver.Firefox()
     driver.set_window_size(1366, 768)
 
     #Right now this runs once every hour.
     #The loop may take longer than an hour depending on internet/urllib speed
     #Could adjust frequency by adjusting the time_to_wait line.
     #Number in time_to_wait (5400) is an int in seconds.
-    #Right now 5400 - difference makes it wait so that each loop is an hour and a half long
-    #You could make it 1800 - difference for 30 minutes, 3600 for an hour, or 7200 for every 2 hours.
+    #Right now 7200 - difference makes it wait so that each loop is an 2 hours long
+    #You could make it 1800 - difference for 30 minutes, 3600 for an hour, or 5400 for every 1.5 hours.
 
     while True:
 
@@ -104,7 +105,7 @@ def main():
         list_of_urls = []
         list_of_titles= []
         
-        #Loop to Get Lists of URLs and Titles for the HTML Files
+        #Loop to Get Lists of URLs and Titles for the Images
         for i in range(len(list_of_subreddits)):
 
             counter = 0
@@ -139,12 +140,18 @@ def main():
             
             driver.get(list_of_urls[i])
             driver.save_screenshot(list_of_titles[i] + '.jpg')
+
+            #driver.find_element_by_name("over18").click()  #Click doesnt work
+            driver.find_element_by_name("over18").submit()  #Submit works on Firefox
+
+            driver.save_screenshot(list_of_titles[i] + '_2.jpg')
+
         
 
         #Get the time to wait to where from start_time to the next start_time should be exactly 1.5 hours
         end_time = time.clock()
         difference = end_time - start_time
-        time_to_wait = 5400 - difference
+        time_to_wait = 7200 - difference
 
 
         #If for some reason the downloading takes longer than 1.5 hours then go ahead and go to next loop otherwise wait
